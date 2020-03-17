@@ -108,22 +108,32 @@ class ABCer:
 
 
 #%%
-if __name__ = '__main__':
+if __name__ == '__main__':
+    import matplotlib.pyplot as plt
     # Example
     def model_test(para):
-        time_survey = np.array([0, 1, 2, 5])
+        time_survey = np.arange(18)
         y = para[0] * np.exp(para[1] * time_survey)
         return y
 
     y = model_test([1, 2])
 
-    observations=np.array([1.0, 7.0, 50.0, 2200.0])
+    observations=np.array([1.0, 7.0,10.0,24.0,38.0,82.0,128.0,188.0,265.0,321.0,382.0,503.0,614.0,804.0,959.0,1135.0,1413.0,1705.0])
+    time = np.arange(len(observations))
+    
+
     test_ABC = ABCer(20, 10000, observations=observations)
     test_ABC.initialize_model(model_test)
     test_ABC.initialize_parameters([0.0, 1.0])
     test_list = test_ABC.ABC(prior_paras=[0.0, 1.0, 1.0, 2.0])
 
     # %%
-    y_inferred = model_test([0.84,1.575])
+    plt.plot(time,observations, 'o')
+    para_inferred = []
+    para_inferred.append(np.mean(test_list[0][20,:]))
+    para_inferred.append(np.mean(test_list[1][20,:]))
+    y_inferred = model_test(para_inferred)
+    plt.plot(time,y_inferred,'x',color = 'r')
 
-# %%
+    # %%
+
