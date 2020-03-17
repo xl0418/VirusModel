@@ -108,17 +108,15 @@ class ABCer:
 
 
 #%%
-if __name__ = "main":
+if __name__ = '__main__':
     # Example
     def model_test(para):
         time_survey = np.array([0, 1, 2, 5])
         y = para[0] * np.exp(para[1] * time_survey)
         return y
 
-
     y = model_test([1, 2])
 
-    # %%
     observations=np.array([1.0, 7.0, 50.0, 2200.0])
     test_ABC = ABCer(20, 10000, observations=observations)
     test_ABC.initialize_model(model_test)
