@@ -1,5 +1,5 @@
 # %%
-from ABC_growthmodel import ABCer
+from ABCer import ABCer
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -30,7 +30,8 @@ extend_time = np.arange(21)
 y_inferred = model1(para_inferred, np.arange(21))
 
 plt.plot(extend_time, y_inferred, 'x', color='r')
-
+plt.xlabel("Days")
+plt.ylabel('Number of infected cases')
 
 # %%
 # Model 2
