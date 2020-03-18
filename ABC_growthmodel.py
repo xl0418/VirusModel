@@ -19,7 +19,7 @@ class ABCer:
         return self.parameters
 
     def normalized_norm(self, x):
-        diff_norm = np.linalg.norm(x - self.observations, axis=1)
+        diff_norm = np.linalg.norm(x / self.observations - 1, axis=1)
         max_err = np.nanmax(diff_norm)
         return diff_norm / max_err
 
@@ -63,6 +63,7 @@ class ABCer:
         for key, value in disct_parameters.items():
             l = np.zeros(shape=(self.iterations + 1, self.particles))
             l[0,:] = para_each_iteration[:,key]
+            
             disct_parameters[key] = l
 
         # fitness
@@ -111,8 +112,8 @@ class ABCer:
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
     # Example
-    def model_test(para):
-        time_survey = np.arange(18)
+    def model_test(para, time_survey=np.arange(18)):
+        # time_survey = np.arange(18)
         y = para[0] * np.exp(para[1] * time_survey)
         return y
 
@@ -122,7 +123,7 @@ if __name__ == '__main__':
     time = np.arange(len(observations))
     
 
-    test_ABC = ABCer(20, 10000, observations=observations)
+    test_ABC = ABCer(100, 10000, observations=observations)
     test_ABC.initialize_model(model_test)
     test_ABC.initialize_parameters([0.0, 1.0])
     test_list = test_ABC.ABC(prior_paras=[0.0, 1.0, 1.0, 2.0])
@@ -132,8 +133,10 @@ if __name__ == '__main__':
     para_inferred = []
     para_inferred.append(np.mean(test_list[0][20,:]))
     para_inferred.append(np.mean(test_list[1][20,:]))
-    y_inferred = model_test(para_inferred)
-    plt.plot(time,y_inferred,'x',color = 'r')
+    extend_time = np.arange(21)
+    y_inferred = model_test(para_inferred, np.arange(21))
+
+    plt.plot(extend_time,y_inferred,'x',color = 'r')
 
     # %%
 
